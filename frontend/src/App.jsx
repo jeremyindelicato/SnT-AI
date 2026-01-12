@@ -39,23 +39,20 @@ function App() {
 
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-700 ${
-        isScrolled ? 'py-3 bg-black/90 backdrop-blur-2xl border-b border-primary/10 shadow-[0_0_30px_rgba(212,175,55,0.1)]' : 'py-6 bg-transparent'
+        isScrolled ? 'py-3 bg-black/90 backdrop-blur-2xl border-b border-primary/10 shadow-[0_0_30px_rgba(255,215,0,0.15)]' : 'py-6 bg-transparent'
       }`}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 flex justify-between items-center">
 
-          {/* Logo avec SVG */}
-          <div className="flex items-center gap-3 group cursor-pointer animate-fade-in">
-            <div className="relative w-10 h-10 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+          {/* Logo SVG Premium */}
+          <div className="group cursor-pointer animate-fade-in">
+            <div className="relative w-16 h-16 md:w-20 md:h-20 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
               <img
                 src="/LogoSnT.svg"
                 alt="Start&Trade Logo"
                 className="w-full h-full object-contain"
               />
-              <div className="absolute inset-0 bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-primary/30 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
-            <span className="text-xl md:text-2xl font-bold tracking-tight bg-gradient-to-r from-accent-light via-primary to-accent-light bg-clip-text text-transparent animate-shimmer bg-[length:200%_auto]">
-              Start<span className="text-primary">&</span>Trade
-            </span>
           </div>
 
           {/* Nav Links */}
@@ -94,10 +91,10 @@ function App() {
         <div className="max-w-7xl mx-auto flex flex-col items-center">
 
           {/* Badge Premium */}
-          <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/5 border border-primary/20 backdrop-blur-sm text-primary text-[9px] font-bold uppercase tracking-[0.2em] mb-12 animate-slide-up shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+          <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/5 border border-primary/20 backdrop-blur-sm text-primary text-[9px] font-bold uppercase tracking-[0.2em] mb-12 animate-slide-up shadow-[0_0_20px_rgba(255,215,0,0.15)]">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary shadow-[0_0_10px_rgba(212,175,55,0.5)]"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary shadow-[0_0_10px_rgba(255,215,0,0.6)]"></span>
             </span>
             Intelligence Financière Locale
           </div>

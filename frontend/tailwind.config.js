@@ -8,9 +8,9 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#D4AF37', // Or luxe
-          dark: '#B8941F',
-          light: '#F0D774',
+          DEFAULT: '#FFD700', // Or jaune premium (Gold)
+          dark: '#DAA520', // Goldenrod
+          light: '#FFF176', // Or clair lumineux
         },
         accent: {
           DEFAULT: '#C0C0C0', // Argent

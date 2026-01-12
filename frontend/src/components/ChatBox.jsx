@@ -87,7 +87,7 @@ const ChatBox = () => {
   };
 
   return (
-    <GlassCard className="p-1 border-primary/20 shadow-[0_0_40px_rgba(212,175,55,0.08)]" hover={false}>
+    <GlassCard className="p-1 border-primary/20 shadow-[0_0_40px_rgba(255,215,0,0.12)]" hover={false}>
       <div className="bg-black/60 rounded-[1.7rem] overflow-hidden">
 
         {/* Header Premium */}
@@ -149,7 +149,7 @@ const ChatBox = () => {
               <div
                 className={`max-w-[85%] p-5 rounded-2xl text-sm leading-relaxed backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] ${
                   msg.role === 'user'
-                    ? 'rounded-tr-none bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/30 text-accent-light shadow-[0_0_20px_rgba(212,175,55,0.1)]'
+                    ? 'rounded-tr-none bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/30 text-accent-light shadow-[0_0_20px_rgba(255,215,0,0.15)]'
                     : msg.isError
                     ? 'rounded-tl-none bg-gradient-to-br from-red-500/10 to-red-500/5 border border-red-500/30 text-red-300'
                     : 'rounded-tl-none bg-gradient-to-br from-white/5 to-white/[0.02] border border-accent/10 text-gray-300'
@@ -194,7 +194,7 @@ const ChatBox = () => {
               placeholder="Posez votre question sur l'investissement..."
               disabled={isLoading || !isOnline}
               className="flex-1 bg-white/5 border border-primary/20 rounded-2xl py-4 px-6
-                focus:outline-none focus:border-primary/50 focus:shadow-[0_0_20px_rgba(212,175,55,0.1)]
+                focus:outline-none focus:border-primary/50 focus:shadow-[0_0_20px_rgba(255,215,0,0.15)]
                 transition-all duration-300 text-sm font-light tracking-wide
                 placeholder:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed
                 text-accent-light"
