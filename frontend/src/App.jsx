@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import ChatBox from './components/ChatBox';
 import GlassCard from './components/GlassCard';
+import ColorBends from './components/ui/ColorBends';
 
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,16 +25,16 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-dark-bg text-gray-100 selection:bg-primary/30 font-sans antialiased overflow-x-hidden">
+    <div className="min-h-screen text-gray-100 selection:bg-primary/30 font-sans antialiased overflow-x-hidden relative">
 
-      {/* Background Effects Premium */}
+      {/* ColorBends Background from React Bits */}
+      <ColorBends color="#FFD700" />
+
+      {/* Dark base layer with transparency to let ColorBends show through */}
+      <div className="fixed inset-0 bg-dark-bg/80 -z-5 pointer-events-none"></div>
+
+      {/* Grid Pattern Overlay */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        {/* Gradient Orbs */}
-        <div className="absolute top-[-20%] right-[-10%] w-[70%] h-[70%] bg-primary/8 blur-[150px] rounded-full animate-pulse-slow" />
-        <div className="absolute bottom-[-10%] left-[-5%] w-[60%] h-[60%] bg-accent/5 blur-[140px] rounded-full animate-float" />
-        <div className="absolute top-[40%] left-[50%] w-[40%] h-[40%] bg-primary/5 blur-[100px] rounded-full animate-glow" />
-
-        {/* Grid Pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000,transparent)]" />
       </div>
 
@@ -96,27 +97,42 @@ function App() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary shadow-[0_0_10px_rgba(255,215,0,0.6)]"></span>
             </span>
-            Intelligence Financière Locale
+            100% Gratuit · Open Source · IA Locale
           </div>
 
-          {/* Hero Title Premium avec animation */}
-          <h1 className="text-5xl md:text-8xl lg:text-9xl font-extralight tracking-tighter text-center mb-8 leading-[0.95] animate-fade-in">
-            L'élite de
-            <br />
-            <span className="relative inline-block">
-              <span className="bg-gradient-to-r from-accent-light via-primary to-accent-light bg-clip-text text-transparent animate-shimmer bg-[length:200%_auto] font-light italic">
-                l'investissement intelligent.
-              </span>
-              <div className="absolute -bottom-2 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
-            </span>
-          </h1>
+          {/* Hero Content with Image - Two Column Layout */}
+          <div className="w-full max-w-7xl grid md:grid-cols-2 gap-12 items-center mb-16">
 
-          {/* Hero Subtitle */}
-          <p className="max-w-2xl mx-auto text-gray-400 text-base md:text-xl text-center mb-16 font-light leading-relaxed animate-slide-up [animation-delay:200ms]">
-            Start&Trade Assistant, votre conseiller financier personnel propulsé par l'IA.
-            <br />
-            <span className="text-accent">Apprenez, explorez et investissez avec confiance.</span>
-          </p>
+            {/* Left Column - Title and Subtitle */}
+            <div className="text-center md:text-left animate-fade-in">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-extralight tracking-tighter mb-6 leading-[1.1]">
+                L'élite de
+                <br />
+                <span className="relative inline-block">
+                  <span className="bg-gradient-to-r from-accent-light via-primary to-accent-light bg-clip-text text-transparent animate-shimmer bg-[length:200%_auto] font-light italic">
+                    l'investissement intelligent.
+                  </span>
+                  <div className="absolute -bottom-2 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
+                </span>
+              </h1>
+
+              <p className="text-gray-400 text-base md:text-lg mb-8 font-light leading-relaxed animate-slide-up [animation-delay:200ms]">
+                Start&Trade Assistant, votre conseiller financier personnel propulsé par l'IA.
+                <br />
+                <span className="text-accent">100% gratuit, open source et respectueux de votre vie privée.</span>
+              </p>
+            </div>
+
+            {/* Right Column - Money Image */}
+            <div className="relative animate-slide-up [animation-delay:400ms] group">
+              <img
+                src="/moneyimage.png"
+                alt="Financial Intelligence"
+                className="w-full h-auto rounded-3xl shadow-[0_0_80px_rgba(255,215,0,0.2)] transition-all duration-500 group-hover:scale-105 group-hover:shadow-[0_0_120px_rgba(255,215,0,0.35)]"
+              />
+            </div>
+
+          </div>
 
           {/* Scroll Indicator Premium */}
           <a href="#assistant" className="group flex flex-col items-center gap-3 text-sm text-gray-600 hover:text-primary transition-all duration-500 animate-slide-up [animation-delay:400ms]">
@@ -282,14 +298,20 @@ function App() {
             <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-primary" />
           </div>
           <h2 className="text-4xl md:text-6xl font-extralight mb-8 tracking-tight">
-            Projet <span className="bg-gradient-to-r from-primary via-accent-light to-primary bg-clip-text text-transparent font-light italic">HEPHAESTUS</span>
+            Start <span className="bg-gradient-to-r from-primary via-accent-light to-primary bg-clip-text text-transparent font-light italic">& Trade</span>
           </h2>
-          <p className="text-gray-500 leading-relaxed mb-12 text-sm md:text-base">
-            Start&Trade est un agent conversationnel intelligent développé dans le cadre du projet HEPHAESTUS.
+          <p className="text-gray-500 leading-relaxed mb-8 text-sm md:text-base">
+            Start&Trade est un conseiller financier intelligent.
             Notre mission : créer un assistant financier pédagogique pour jeunes investisseurs,
             <br />
             <span className="text-accent">entièrement local, sans dépendance aux APIs payantes.</span>
           </p>
+
+          {/* Open Source Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-12">
+            <Github size={16} className="text-primary" />
+            <span className="text-primary text-xs font-bold uppercase tracking-wider">100% Open Source & Gratuit</span>
+          </div>
 
           <div className="flex flex-wrap justify-center gap-4 text-xs">
             {[
@@ -327,7 +349,7 @@ function App() {
           </div>
 
           <div className="text-[9px] text-gray-700 uppercase tracking-[0.2em] font-medium">
-            © 2026 HEPHAESTUS
+            © 2026 Start & Trade
           </div>
         </div>
       </footer>

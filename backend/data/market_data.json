@@ -1,0 +1,73 @@
+{
+    "metadata": {
+        "source": "Yahoo Finance",
+        "timestamp": "2026-01-13T11:55:19.716883"
+    },
+    "global_market": {},
+    "details": {
+        "AAPL": {
+            "symbol": "AAPL",
+            "name": "Yahoo Finance",
+            "price": "8 318,05",
+            "change": "-40,71",
+            "percent_change": "(-0,49 %)",
+            "details": {
+                "Prix actuel": "8 318,05",
+                "Ouverture": "259,41",
+                "Clôture précédente": "259,37",
+                "Variation": "-40,71",
+                "Variation %": "(-0,49 %)",
+                "Plage du jour": "256,80 - 261,30",
+                "Plage sur 52 semaines": "169,21 - 288,62",
+                "Volume": "45 056 584",
+                "Volume moyen": "45 601 434",
+                "Capitalisation boursière": "3,846Bil.",
+                "Ratio C/B (P/E)": "34,84",
+                "Prix cible moyen": "287,83"
+            },
+            "url": "https://fr.finance.yahoo.com/quote/AAPL",
+            "source": "Yahoo Finance (Detail)"
+        },
+        "AI.PA": {
+            "symbol": "AI.PA",
+            "name": "Yahoo Finance",
+            "price": "8 314,59",
+            "change": "-44,17",
+            "percent_change": "(-0,53 %)",
+            "details": {
+                "Date": "",
+                "Fermer": "8 314,59",
+                "Ouverture": "158,90",
+                "Maximum": "n/a",
+                "Minimum": "n/a",
+                "Volume": "75 059"
+            },
+            "url": "https://fr.finance.yahoo.com/quote/AI.PA",
+            "source": "Yahoo Finance (Detail)"
+        },
+        "MC.PA": {
+            "symbol": "MC.PA",
+            "name": "Yahoo Finance",
+            "price": "8 318,40",
+            "change": "-40,36",
+            "percent_change": "(-0,48 %)",
+            "details": {
+                "Date": "",
+                "Prix actuel": "8 318,40",
+                "Ouverture": "646,90",
+                "Clôture précédente": "648,30",
+                "Variation": "-40,36",
+                "Variation %": "(-0,48 %)",
+                "Plage du jour": "644,00 - 648,20",
+                "Plage sur 52 semaines": "436,55 - 762,70",
+                "Volume": "32 864",
+                "Volume moyen": "362 408",
+                "Capitalisation boursière": "321,077Mds",
+                "Ratio C/B (P/E)": "29,43",
+                "Prix cible moyen": "639,50"
+            },
+            "url": "https://fr.finance.yahoo.com/quote/MC.PA",
+            "source": "Yahoo Finance (Detail)"
+        }
+    }
+}
