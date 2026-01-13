@@ -216,7 +216,10 @@ class FinancialAgent:
 
                 # Injection des données dans le contexte système
                 if tool_result.get("success"):
-                    context_data = tool_result.get("context", "Données non disponibles")
+                    # Le contexte est dans tool_result['result']['context']
+                    result_data = tool_result.get("result", {})
+                    context_data = result_data.get("context", "Données non disponibles")
+
                     context_message = (
                         f"[DONNÉES FINANCIÈRES EN TEMPS RÉEL]\n"
                         f"{context_data}\n\n"
@@ -248,6 +251,16 @@ class FinancialAgent:
             )
 
             logger.info(f"Processing message: {user_message[:100]}...")
+
+            # DEBUG: Afficher la taille de l'historique
+            total_chars = sum(len(msg['content']) for msg in self.conversation_history)
+            logger.info(f"Sending {len(self.conversation_history)} messages to Ollama (~{total_chars} chars)")
+
+            # Afficher le dernier message système (avec données financières) si présent
+            system_messages = [msg for msg in self.conversation_history if msg['role'] == 'system']
+            if len(system_messages) > 1:  # Plus que le system prompt initial
+                last_system = system_messages[-1]
+                logger.info(f"Latest system message (financial data): {last_system['content'][:300]}...")
 
             # Call Ollama avec contexte enrichi
             response = ollama.chat(

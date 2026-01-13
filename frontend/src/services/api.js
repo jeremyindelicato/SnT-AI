@@ -10,7 +10,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 30000, // 30 secondes pour les requêtes longues
+  timeout: 120000, // 2 minutes pour les requêtes avec LLM (peuvent être longues)
 });
 
 /**
