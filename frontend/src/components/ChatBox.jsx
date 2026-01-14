@@ -30,7 +30,12 @@ const ChatBox = () => {
   };
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // Scroll uniquement dans le conteneur de messages, pas toute la page
+    messagesEndRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',  // Ne scroll pas la page entière
+      inline: 'nearest'
+    });
   };
 
   const handleSendMessage = async (e) => {

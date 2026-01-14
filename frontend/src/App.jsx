@@ -159,7 +159,7 @@ function App() {
             <p className="text-gray-500 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
               Posez vos questions sur les actions, ETF, diversification ou toute notion financière.
               <br />
-              <span className="text-accent-dark">Propulsé par Phi 3.5 Mini en local via Ollama.</span>
+              <span className="text-accent-dark">Propulsé par Qwen 2.5 en local via Ollama.</span>
             </p>
           </div>
 

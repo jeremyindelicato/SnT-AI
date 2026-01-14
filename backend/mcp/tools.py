@@ -7,9 +7,9 @@ import os
 from typing import Dict, Optional
 from datetime import datetime
 
-# Ajouter le répertoire parent au path pour importer scraping_yahoo
+# Ajouter le répertoire parent au path pour importer scraping_yfinance
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from scraping.scraping_yahoo import get_market_data as scrape_market_data
+from scraping.scraping_yfinance import get_market_data as scrape_market_data
 
 logger = logging.getLogger(__name__)
 
