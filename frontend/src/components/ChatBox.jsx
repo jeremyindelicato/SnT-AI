@@ -10,6 +10,27 @@ const ChatBox = () => {
   const [isOnline, setIsOnline] = useState(false);
   const messagesEndRef = useRef(null);
 
+  /**
+   * Post-traitement : Convertit Markdown **gras** en HTML <strong>
+   * Nettoie aussi les autres patterns Markdown non désirés
+   */
+  const processMarkdown = (text) => {
+    if (!text) return text;
+
+    // Convertir **texte** en <strong>texte</strong>
+    let processed = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    // Convertir __texte__ en <strong>texte</strong>
+    processed = processed.replace(/__(.+?)__/g, '<strong>$1</strong>');
+
+    // Supprimer les ### titres (remplacer par texte simple)
+    processed = processed.replace(/^###\s+(.+)$/gm, '$1');
+    processed = processed.replace(/^##\s+(.+)$/gm, '$1');
+    processed = processed.replace(/^#\s+(.+)$/gm, '$1');
+
+    return processed;
+  };
+
   // Vérifier la connexion au backend au démarrage
   useEffect(() => {
     checkBackendHealth();
@@ -166,7 +187,10 @@ const ChatBox = () => {
                     <span className="text-xs font-bold uppercase tracking-wider">Erreur</span>
                   </div>
                 )}
-                <p className="whitespace-pre-wrap">{msg.content}</p>
+                <p
+                  className="whitespace-pre-wrap"
+                  dangerouslySetInnerHTML={{ __html: processMarkdown(msg.content) }}
+                />
                 {msg.model && (
                   <p className="text-[9px] text-gray-600 mt-3 uppercase tracking-wider">Modèle: {msg.model}</p>
                 )}

@@ -83,6 +83,52 @@ class FinancialAgent:
         "credit agricole": "ACA.PA",
         "engie": "ENGI.PA",
         "alstom": "ALO.PA",
+
+        # ETF US populaires
+        "spy": "SPY",
+        "s&p 500": "SPY",
+        "sp 500": "SPY",
+        "sp500": "SPY",
+        "s&p500": "SPY",
+        "spdr s&p": "SPY",
+        "qqq": "QQQ",
+        "nasdaq 100": "QQQ",
+        "nasdaq100": "QQQ",
+        "invesco nasdaq": "QQQ",
+        "vti": "VTI",
+        "vanguard total": "VTI",
+        "vanguard total market": "VTI",
+        "voo": "VOO",
+        "vanguard s&p": "VOO",
+        "vanguard s&p 500": "VOO",
+        "dia": "DIA",
+        "dow jones": "DIA",
+        "dow 30": "DIA",
+        "iwm": "IWM",
+        "russell 2000": "IWM",
+        "vea": "VEA",
+        "vanguard developed": "VEA",
+        "vwo": "VWO",
+        "vanguard emerging": "VWO",
+        "emergent": "VWO",
+
+        # ETF Européens (UCITS) - Euronext Amsterdam
+        "iwda": "IWDA.AS",
+        "ishares world": "IWDA.AS",
+        "msci world": "IWDA.AS",
+        "ishares msci world": "IWDA.AS",
+        "vwce": "VWCE.DE",
+        "vanguard all world": "VWCE.DE",
+        "vanguard ftse all": "VWCE.DE",
+        "all world": "VWCE.DE",
+
+        # ETF Européens - Euronext Paris
+        "cw8": "CW8.PA",
+        "amundi msci world": "CW8.PA",
+        "lyxor msci world": "EWLD.PA",
+        "ewld": "EWLD.PA",
+        "lyxor sp500": "SP5.PA",
+        "sp5": "SP5.PA",
     }
 
     def __init__(self):

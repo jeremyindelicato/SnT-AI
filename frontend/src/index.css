@@ -64,3 +64,9 @@
 *:focus-visible {
   @apply outline-none ring-2 ring-primary/50 ring-offset-2 ring-offset-dark-bg;
 }
+
+/* Strong/Bold text styling for LLM responses */
+strong {
+  font-weight: 700;
+  color: #FFD700; /* Gold color matching primary theme */
+}

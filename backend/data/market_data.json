@@ -1,7 +1,7 @@
 {
     "metadata": {
         "source": "Yahoo Finance",
-        "timestamp": "2026-01-13T17:10:43.112523"
+        "timestamp": "2026-01-14T14:22:28.140557"
     },
     "global_market": {},
     "details": {
@@ -131,6 +131,31 @@
                 "Ratio de liquidité": "1.01"
             },
             "url": "https://finance.yahoo.com/quote/TTE.PA",
+            "source": "Yahoo Finance (yfinance)"
+        },
+        "SPY": {
+            "symbol": "SPY",
+            "name": "SPDR S&P 500 ETF",
+            "price": "693.77",
+            "change": "-1.39",
+            "percent_change": "(-0.20%)",
+            "details": {
+                "Prix actuel": "693.77",
+                "Variation": "-1.39",
+                "Variation %": "(-0.20%)",
+                "Ouverture": "695.49",
+                "Plus haut du jour": "696.09",
+                "Plus bas du jour": "691.37",
+                "Clôture précédente": "695.16",
+                "Volume": "71,173,204",
+                "Volume moyen": "79,252,454",
+                "Plage sur 52 semaines": "481.80 - 696.09",
+                "Capitalisation boursière": "636.73B",
+                "Ratio C/B (P/E)": "28.09",
+                "Ratio prix/valeur comptable": "1.62",
+                "Rendement du dividende": "107.00%"
+            },
+            "url": "https://finance.yahoo.com/quote/SPY",
             "source": "Yahoo Finance (yfinance)"
         }
     }
