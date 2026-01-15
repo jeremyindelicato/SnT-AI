@@ -122,13 +122,13 @@ ollama list
 cd backend
 
 # Créer un environnement virtuel
-python3 -m venv venv
+python -m venv venv
 
 # Activer l'environnement virtuel
 # macOS/Linux :
 source venv/bin/activate
 # Windows :
-# venv\Scripts\activate
+ venv\Scripts\activate
 
 # Installer les dépendances Python
 pip install -r requirements.txt
@@ -161,7 +161,7 @@ npm list --depth=0
 
 ```bash
 cd backend
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate  /  Windows: venv\Scripts\activate
 python -m mcp.mcp_server
 ```
 
@@ -175,7 +175,7 @@ INFO:     Uvicorn running on http://0.0.0.0:8001
 
 ```bash
 cd backend
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate  / Windows: venv\Scripts\activate
 uvicorn app.main:app --reload --port 8000
 ```
 
