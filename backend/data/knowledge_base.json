@@ -1,0 +1,522 @@
+{
+  "meta": {
+    "name": "Start & Trade Knowledge Base",
+    "version": "1.0.0",
+    "language": "fr",
+    "generated_at": "2026-01-14T00:00:00Z",
+    "description": "Base de connaissances pédagogique pour un conseiller boursier IA destiné aux débutants."
+  },
+
+  "disclaimers": {
+    "no_financial_advice": "Ce système fournit des explications pédagogiques sur la bourse et l'investissement. Il ne donne pas de conseils personnalisés d'achat ou de vente.",
+    "no_performance_promise": "Les performances passées ne garantissent pas les performances futures. Tout investissement comporte un risque de perte en capital.",
+    "domain_only": "Les réponses sont limitées à la bourse, aux actions, aux ETF, aux indices, aux risques et aux notions de base de l’investissement."
+  },
+
+  "domain_constraints": {
+    "allowed_topics": [
+      "bourse",
+      "actions",
+      "ETF",
+      "indices boursiers",
+      "notions de risque",
+      "gestion du risque",
+      "diversification",
+      "fonctionnement des ordres boursiers",
+      "macroéconomie simple liée aux marchés",
+      "psychologie de l'investisseur débutant"
+    ],
+    "forbidden_behaviors": [
+      "recommander un achat ou une vente",
+      "proposer une allocation de portefeuille chiffrée",
+      "prédire l’évolution future d’un actif",
+      "donner des conseils fiscaux ou légaux",
+      "répondre à des sujets hors finance"
+    ]
+  },
+
+  "profile_module": {
+    "questions": [
+      {
+        "id": "horizon",
+        "label": "Quel est ton horizon d’investissement ?",
+        "options": [
+          "court terme (moins d’un an)",
+          "moyen terme (1 à 5 ans)",
+          "long terme (plus de 5 ans)"
+        ]
+      },
+      {
+        "id": "risk_tolerance",
+        "label": "Quel est ton niveau de confort avec le risque ?",
+        "options": [
+          "faible (je veux surtout éviter les fortes baisses)",
+          "modéré (je peux accepter des variations modérées)",
+          "élevé (je peux accepter des fluctuations importantes)"
+        ]
+      },
+      {
+        "id": "preference",
+        "label": "Qu’est-ce que tu privilégies ?",
+        "options": [
+          "stabilité",
+          "croissance équilibrée",
+          "innovation / secteurs dynamiques"
+        ]
+      }
+    ],
+    "risk_matrix": [
+      {
+        "label": "Risque faible",
+        "description": "Stratégies orientées long terme, diversification élevée, exposition principalement via des ETF larges.",
+        "examples": [
+          "ETF répliquant un grand indice (ex : monde, USA large cap)",
+          "Portefeuille très diversifié"
+        ]
+      },
+      {
+        "label": "Risque modéré",
+        "description": "Mélange d’ETF diversifiés et de quelques grandes entreprises reconnues.",
+        "examples": [
+          "Grandes entreprises technologiques établies",
+          "ETF sectoriels larges"
+        ]
+      },
+      {
+        "label": "Risque élevé",
+        "description": "Forte exposition à quelques actions en croissance ou secteurs volatils.",
+        "examples": [
+          "Actions de croissance individuelles",
+          "Secteurs comme l’IA, la biotech, les énergies nouvelles"
+        ]
+      },
+      {
+        "label": "Risque très élevé",
+        "description": "Trading actif, levier, secteurs très spéculatifs. Non adapté à un débutant.",
+        "examples": [
+          "Day trading intensif",
+          "Effet de levier",
+          "Actifs très spéculatifs"
+        ]
+      }
+    ]
+  },
+
+  "concepts": [
+    {
+      "slug": "bourse",
+      "title": "Bourse / Marché financier",
+      "short_def": "Un marché où l'on achète et vend des titres financiers comme des actions ou des ETF.",
+      "detailed_expl": "La Bourse est un marché organisé où se rencontrent acheteurs et vendeurs de titres financiers. Les prix varient en fonction de l'offre et de la demande, des résultats des entreprises et du contexte économique.",
+      "tags": ["bases", "marchés"],
+      "keywords": ["bourse", "marché", "marché financier", "qu'est-ce que", "définition"]
+    },
+    {
+      "slug": "action",
+      "title": "Action",
+      "short_def": "Part de propriété d'une entreprise cotée en bourse.",
+      "detailed_expl": "Une action représente une fraction du capital d'une entreprise. Posséder une action donne souvent des droits, comme voter aux assemblées générales ou recevoir un dividende si l'entreprise en distribue.",
+      "tags": ["produit", "débutant"],
+      "keywords": ["action", "actions", "titre", "part", "propriété", "actionnaire"]
+    },
+    {
+      "slug": "etf",
+      "title": "ETF (Exchange Traded Fund)",
+      "short_def": "Un fonds coté qui réplique un indice ou un panier d'actifs.",
+      "detailed_expl": "Un ETF est un fonds listé en bourse qui détient un ensemble d'actifs (par exemple les 500 plus grandes entreprises américaines). Il permet d'investir facilement dans un panier diversifié avec un seul achat.",
+      "tags": ["produit", "diversification"],
+      "keywords": ["etf", "fonds", "tracker", "réplication", "indiciel", "passif"]
+    },
+    {
+      "slug": "indice",
+      "title": "Indice boursier",
+      "short_def": "Panier de titres représentant un marché ou un secteur.",
+      "detailed_expl": "Un indice boursier (ex: CAC 40, S&P 500) est un indicateur qui mesure la performance d'un groupe d'entreprises. Il permet de suivre l'évolution globale d'un marché sans regarder chaque action individuellement.",
+      "tags": ["bases", "marchés"],
+      "keywords": ["indice", "indices", "cac 40", "s&p 500", "dow jones", "benchmark"]
+    },
+    {
+      "slug": "dividende",
+      "title": "Dividende",
+      "short_def": "Part des bénéfices reversée aux actionnaires.",
+      "detailed_expl": "Le dividende est un versement en cash (ou parfois en actions) décidé par une entreprise lorsqu'elle souhaite redistribuer une partie de ses bénéfices à ses actionnaires. Il n'est jamais garanti.",
+      "tags": ["rendement"],
+      "keywords": ["dividende", "dividendes", "rendement", "versement", "distribution"]
+    },
+    {
+      "slug": "volatilite",
+      "title": "Volatilité",
+      "short_def": "Mesure de l'ampleur des variations de prix d'un actif.",
+      "detailed_expl": "Un actif très volatil voit son prix beaucoup bouger à la hausse comme à la baisse. Un actif peu volatil a un prix plus stable. Pour un débutant, une volatilité élevée signifie des émotions plus fortes et un risque plus important.",
+      "tags": ["risque"],
+      "keywords": ["volatilité", "variation", "fluctuation", "beta", "stabilité"]
+    },
+    {
+      "slug": "diversification",
+      "title": "Diversification",
+      "short_def": "Répartir son investissement sur plusieurs actifs pour réduire le risque.",
+      "detailed_expl": "La diversification consiste à investir dans différents secteurs, zones géographiques ou types d'actifs, afin qu'un événement négatif sur un titre ne fasse pas chuter tout le portefeuille.",
+      "tags": ["risque", "gestion"],
+      "keywords": ["diversification", "diversifier", "répartition", "portefeuille", "allocation"]
+    },
+    {
+      "slug": "ordre_boursier",
+      "title": "Ordre boursier",
+      "short_def": "Instruction donnée au courtier pour acheter ou vendre un actif.",
+      "detailed_expl": "Un ordre boursier précise quel actif acheter ou vendre, dans quelle quantité, et à quelles conditions de prix (ordre au marché, limite, stop-loss…).",
+      "tags": ["pratique"],
+      "keywords": ["ordre", "ordre boursier", "achat", "vente", "exécution"]
+    },
+    {
+      "slug": "pe_ratio",
+      "title": "Ratio P/E (Price-to-Earnings)",
+      "short_def": "Ratio comparant le prix d'une action à son bénéfice par action.",
+      "detailed_expl": "Le ratio P/E divise le prix de l'action par le bénéfice par action (BPA). Un P/E élevé peut indiquer que le marché anticipe une forte croissance, ou que l'action est chère. Un P/E faible peut signaler une sous-valorisation ou des difficultés.",
+      "tags": ["analyse", "valorisation"],
+      "keywords": ["pe", "p/e", "per", "ratio", "valorisation", "prix bénéfice"]
+    },
+    {
+      "slug": "capitalisation",
+      "title": "Capitalisation boursière",
+      "short_def": "Valeur totale d'une entreprise cotée en bourse.",
+      "detailed_expl": "La capitalisation boursière se calcule en multipliant le prix de l'action par le nombre total d'actions en circulation. Elle permet de classer les entreprises par taille : small cap (petite), mid cap (moyenne), large cap (grande).",
+      "tags": ["analyse", "bases"],
+      "keywords": ["capitalisation", "market cap", "cap", "valeur", "taille"]
+    },
+    {
+      "slug": "crypto",
+      "title": "Crypto-monnaie",
+      "short_def": "Actif numérique décentralisé basé sur la blockchain.",
+      "detailed_expl": "Les crypto-monnaies (Bitcoin, Ethereum, etc.) sont des actifs numériques très volatils et non régulés. Elles comportent un risque de perte totale et ne sont pas adaptées aux débutants. Elles ne devraient jamais représenter plus de 5-10% d'un portefeuille très agressif.",
+      "tags": ["risque", "actifs"],
+      "keywords": ["crypto", "cryptomonnaie", "bitcoin", "ethereum", "blockchain"]
+    }
+  ],
+
+  "glossary": {
+    "bid": "Prix maximum qu'un acheteur est prêt à payer pour un actif.",
+    "ask": "Prix minimum qu'un vendeur est prêt à accepter.",
+    "spread": "Différence entre le prix d'achat (bid) et le prix de vente (ask).",
+    "volume": "Nombre de titres échangés sur une période donnée.",
+    "liquidité": "Facilité avec laquelle un actif peut être acheté ou vendu sans trop faire bouger son prix.",
+    "capitalisation": "Valeur totale d'une entreprise cotée : prix de l'action multiplié par le nombre d'actions.",
+    "indice": "Panier de titres représentant un marché ou un secteur (ex : S&P 500, CAC 40).",
+    "ordre_au_marche": "Ordre exécuté immédiatement au meilleur prix disponible.",
+    "ordre_limite": "Ordre exécuté seulement si un prix précis (ou meilleur) est atteint.",
+    "stop_loss": "Ordre automatique pour vendre si le prix descend sous un seuil, afin de limiter une perte.",
+    "take_profit": "Ordre automatique pour vendre si le prix monte jusqu'à un certain niveau, afin de bloquer un gain.",
+    "levier": "Mécanisme qui permet d'augmenter l'exposition au marché avec une mise de départ plus faible, mais qui augmente aussi le risque.",
+    "pe_ratio": "Ratio Prix/Bénéfice - Compare le prix d'une action à son bénéfice par action (BPA).",
+    "pb_ratio": "Ratio Prix/Valeur comptable - Compare le prix de l'action à sa valeur comptable.",
+    "roe": "Return On Equity - Mesure la rentabilité des capitaux propres (bénéfice / capitaux propres).",
+    "roa": "Return On Assets - Mesure la rentabilité des actifs (bénéfice / actifs totaux).",
+    "beta": "Mesure de volatilité par rapport au marché. Beta > 1 = plus volatil que le marché.",
+    "eps": "Earnings Per Share - Bénéfice par action (bénéfice net / nombre d'actions).",
+    "dividend_yield": "Rendement du dividende - Dividende annuel divisé par le prix de l'action.",
+    "market_cap": "Capitalisation boursière - Valeur totale de l'entreprise (prix × nombre d'actions).",
+    "bull_market": "Marché haussier - Période prolongée où les prix montent.",
+    "bear_market": "Marché baissier - Période prolongée où les prix baissent (généralement -20% ou plus)."
+  },
+
+  "history_of_trading": {
+    "overview": "L’histoire du trading retrace l’évolution des marchés, des actifs échangés et des technologies utilisées pour passer des ordres.",
+    "timeline": [
+      {
+        "period": "XVIIe siècle",
+        "event": "Naissance des premières bourses modernes, notamment à Amsterdam, avec des échanges d’actions de compagnies maritimes."
+      },
+      {
+        "period": "XIXe siècle",
+        "event": "Développement des bourses à Paris, Londres, New York. Utilisation du télégraphe pour transmettre les prix plus rapidement."
+      },
+      {
+        "period": "XXe siècle",
+        "event": "Généralisation de la cote électronique, apparition d’indices majeurs, création de produits financiers plus variés."
+      },
+      {
+        "period": "Fin XXe – début XXIe siècle",
+        "event": "Arrivée de l’informatique, du trading en ligne, des stratégies quantitatives et du trading haute fréquence."
+      },
+      {
+        "period": "Aujourd’hui",
+        "event": "Accès facile aux marchés via des applications, popularisation des ETF, montée de l’IA dans l’analyse et la pédagogie."
+      }
+    ]
+  },
+
+  "famous_traders": [
+    {
+      "name": "Warren Buffett",
+      "role": "Investisseur long terme",
+      "bio": "Connu pour sa stratégie d’investissement dans des entreprises de qualité à long terme via Berkshire Hathaway.",
+      "style": "Value investing, approche patiente et disciplinée.",
+      "lesson_for_beginners": "Se concentrer sur des entreprises compréhensibles et penser à long terme."
+    },
+    {
+      "name": "Peter Lynch",
+      "role": "Gestionnaire de fonds",
+      "bio": "A géré le fonds Magellan chez Fidelity avec de très bonnes performances sur la durée.",
+      "style": "Investissement dans des entreprises qu’il comprend bien, souvent proches du quotidien.",
+      "lesson_for_beginners": "Investir dans ce que l’on comprend et connaître les entreprises dans lesquelles on investit."
+    },
+    {
+      "name": "George Soros",
+      "role": "Investisseur macro",
+      "bio": "Célèbre pour ses paris macroéconomiques, notamment contre la livre sterling dans les années 1990.",
+      "style": "Spéculation macro, forte tolérance au risque.",
+      "lesson_for_beginners": "Les stratégies spectaculaires impliquent souvent un risque élevé, peu adapté aux débutants."
+    }
+  ],
+
+  "trading_strategies": [
+    {
+      "name": "Buy & Hold",
+      "type": "long terme",
+      "description": "Acheter des actifs de qualité et les conserver longtemps, sans chercher à profiter de chaque fluctuation de court terme.",
+      "risk_level": "faible à modéré",
+      "suitable_for_beginners": true
+    },
+    {
+      "name": "Investissement passif via ETF",
+      "type": "long terme",
+      "description": "Acheter des ETF qui répliquent de grands indices afin d’être automatiquement diversifié.",
+      "risk_level": "plutôt faible (mais jamais nul)",
+      "suitable_for_beginners": true
+    },
+    {
+      "name": "Growth Investing",
+      "type": "long terme",
+      "description": "Se concentrer sur des entreprises en forte croissance (souvent technologiques), avec un potentiel de hausse plus important mais aussi une volatilité plus élevée.",
+      "risk_level": "modéré à élevé",
+      "suitable_for_beginners": "avec prudence"
+    },
+    {
+      "name": "Swing Trading",
+      "type": "court/moyen terme",
+      "description": "Chercher à profiter de mouvements de prix sur quelques jours à quelques semaines.",
+      "risk_level": "élevé",
+      "suitable_for_beginners": false
+    },
+    {
+      "name": "Day Trading",
+      "type": "court terme",
+      "description": "Ouvrir et fermer des positions au sein de la même journée, parfois en quelques minutes.",
+      "risk_level": "très élevé",
+      "suitable_for_beginners": false
+    }
+  ],
+
+  "beginner_guides": {
+    "typical_questions": [
+      "Quelle est la différence entre une action et un ETF ?",
+      "Par où commencer quand on veut investir en bourse ?",
+      "Comment réduire le risque quand on débute ?",
+      "Est-ce que je dois suivre les actualités économiques tous les jours ?",
+      "Comment comprendre la volatilité d’un actif ?"
+    ],
+    "common_mistakes": [
+      "Investir tout son capital sur une seule action.",
+      "Suivre aveuglément des recommandations sur les réseaux sociaux.",
+      "Investir de l’argent dont on a besoin à court terme.",
+      "Ignorer complètement la notion de risque.",
+      "Paniquer lors de la première baisse de marché."
+    ],
+    "psychology": [
+      {
+        "topic": "FOMO (Fear Of Missing Out)",
+        "definition": "Peur de rater une opportunité, qui pousse à acheter sans réflexion parce que tout le monde en parle."
+      },
+      {
+        "topic": "Biais de confirmation",
+        "definition": "Chercher uniquement des informations qui confirment ce que l’on pense déjà d’un actif."
+      },
+      {
+        "topic": "Aversión aux pertes",
+        "definition": "Tendance à ressentir plus fortement une perte qu’un gain, ce qui peut pousser à garder des positions perdantes trop longtemps."
+      }
+    ]
+  },
+
+  "lessons": [
+    {
+      "id": "lesson_1_bases_bourse",
+      "title": "Comprendre ce qu’est la Bourse",
+      "level": "débutant",
+      "objectives": [
+        "Différencier action, ETF et indice.",
+        "Comprendre que les prix varient en fonction de l’offre et de la demande.",
+        "Voir la Bourse comme un marché, pas comme un casino."
+      ],
+      "outline": [
+        "Qu’est-ce qu’un marché financier ?",
+        "Action vs ETF vs indice.",
+        "Pourquoi les prix montent et descendent ?",
+        "Exemples simples du quotidien."
+      ]
+    },
+    {
+      "id": "lesson_2_gestion_risque",
+      "title": "Bases de la gestion du risque",
+      "level": "débutant",
+      "objectives": [
+        "Comprendre que le risque zéro n’existe pas en bourse.",
+        "Découvrir la diversification et son intérêt.",
+        "Comprendre la notion de tolérance au risque."
+      ],
+      "outline": [
+        "Pourquoi tout investissement comporte un risque.",
+        "Diversification : ne pas mettre tous ses œufs dans le même panier.",
+        "Volatilité et confort psychologique.",
+        "Exemple simple de portefeuille diversifié."
+      ]
+    },
+    {
+      "id": "lesson_3_ordres_boursiers",
+      "title": "Les ordres boursiers de base",
+      "level": "débutant",
+      "objectives": [
+        "Comprendre la différence entre un ordre au marché et un ordre limite.",
+        "Comprendre l’intérêt d’un stop-loss.",
+        "Découvrir le take profit."
+      ],
+      "outline": [
+        "Ordre au marché : aller vite mais sans contrôle précis du prix.",
+        "Ordre limite : priorité au prix, pas à la vitesse.",
+        "Stop-loss : limiter une perte potentielle.",
+        "Take profit : sécuriser un gain.",
+        "Exemples chiffrés simples."
+      ]
+    }
+  ],
+
+  "assets": {
+    "NVDA": {
+      "type": "stock",
+      "name": "NVIDIA Corporation",
+      "short_description": "Entreprise technologique spécialisée dans les processeurs graphiques et l'IA.",
+      "sector": "Technologie",
+      "risk_profile": "élevé",
+      "suitable_for_beginners_comment": "Action de croissance souvent volatile. À traiter avec prudence pour un débutant."
+    },
+    "AAPL": {
+      "type": "stock",
+      "name": "Apple Inc.",
+      "short_description": "Entreprise technologique grand public (smartphones, ordinateurs, services).",
+      "sector": "Technologie",
+      "risk_profile": "modéré",
+      "suitable_for_beginners_comment": "Grande entreprise connue, souvent citée comme exemple pour expliquer les actions aux débutants."
+    },
+    "MC.PA": {
+      "type": "stock",
+      "name": "LVMH",
+      "short_description": "Leader mondial du luxe (Louis Vuitton, Dior, Moët & Chandon, etc.).",
+      "sector": "Luxe",
+      "risk_profile": "modéré",
+      "suitable_for_beginners_comment": "Grande entreprise française du CAC 40, moins volatile que la tech."
+    },
+    "TTE.PA": {
+      "type": "stock",
+      "name": "TotalEnergies",
+      "short_description": "Major pétrolier et gazier français en transition énergétique.",
+      "sector": "Énergie",
+      "risk_profile": "modéré",
+      "suitable_for_beginners_comment": "Action value avec dividende élevé, exposée aux prix du pétrole."
+    },
+    "SPY": {
+      "type": "etf",
+      "name": "SPDR S&P 500 ETF Trust",
+      "short_description": "ETF qui réplique un grand indice américain composé de 500 grandes entreprises.",
+      "sector": "Multi-secteurs",
+      "risk_profile": "plutôt faible (mais lié à la Bourse américaine)",
+      "suitable_for_beginners_comment": "Souvent utilisé comme exemple d'ETF diversifié pour expliquer l'investissement passif."
+    },
+    "QQQ": {
+      "type": "etf",
+      "name": "Invesco QQQ Trust",
+      "short_description": "ETF qui réplique le Nasdaq-100 (100 plus grandes entreprises technologiques).",
+      "sector": "Technologie",
+      "risk_profile": "modéré à élevé",
+      "suitable_for_beginners_comment": "ETF tech diversifié mais plus volatil que le SPY."
+    },
+    "IWDA.AS": {
+      "type": "etf",
+      "name": "iShares MSCI World",
+      "short_description": "ETF européen (UCITS) qui réplique l'indice MSCI World (1500+ entreprises mondiales).",
+      "sector": "Multi-secteurs mondial",
+      "risk_profile": "faible à modéré",
+      "suitable_for_beginners_comment": "Excellent ETF diversifié mondialement, très adapté aux débutants européens."
+    },
+    "BTC-USD": {
+      "type": "crypto",
+      "name": "Bitcoin",
+      "short_description": "Première crypto-monnaie créée en 2009, réserve de valeur décentralisée.",
+      "sector": "Crypto-monnaie",
+      "risk_profile": "très élevé",
+      "suitable_for_beginners_comment": "Actif extrêmement volatil et spéculatif. Risque de perte totale. NON adapté aux débutants."
+    },
+    "^FCHI": {
+      "type": "index",
+      "name": "CAC 40",
+      "short_description": "Principal indice boursier français composé des 40 plus grandes entreprises.",
+      "sector": "Multi-secteurs français",
+      "risk_profile": "modéré",
+      "suitable_for_beginners_comment": "Indicateur de référence pour suivre le marché français."
+    },
+    "^GSPC": {
+      "type": "index",
+      "name": "S&P 500",
+      "short_description": "Principal indice boursier américain composé de 500 grandes entreprises.",
+      "sector": "Multi-secteurs américain",
+      "risk_profile": "modéré",
+      "suitable_for_beginners_comment": "Indicateur de référence pour suivre le marché américain, le plus suivi au monde."
+    }
+  },
+
+  "query_patterns": {
+    "scraping_indicators": [
+      "prix",
+      "cours",
+      "valeur",
+      "cotation",
+      "combien",
+      "performance",
+      "variation",
+      "hausse",
+      "baisse",
+      "analyse",
+      "données",
+      "chiffres",
+      "valorisation actuelle",
+      "aujourd'hui",
+      "actuellement",
+      "maintenant",
+      "en ce moment",
+      "chère",
+      "cher"
+    ],
+    "knowledge_indicators": [
+      "c'est quoi",
+      "qu'est-ce",
+      "explique",
+      "comment",
+      "pourquoi",
+      "définition",
+      "comprendre",
+      "différence",
+      "signifie",
+      "veut dire",
+      "apprendre",
+      "débuter"
+    ],
+    "conversational_indicators": [
+      "bonjour",
+      "salut",
+      "merci",
+      "aide",
+      "peux-tu",
+      "hello",
+      "bonsoir",
+      "bonne journée"
+    ]
+  }
+}

@@ -8,6 +8,8 @@ import ollama
 import httpx
 from .config import settings
 from .prompts import get_system_prompt
+from .router import QueryRouter
+from .knowledge_base import KnowledgeBase
 
 logger = logging.getLogger(__name__)
 
@@ -129,6 +131,54 @@ class FinancialAgent:
         "ewld": "EWLD.PA",
         "lyxor sp500": "SP5.PA",
         "sp5": "SP5.PA",
+
+        # Indices Boursiers Mondiaux
+        "cac 40": "^FCHI",
+        "cac40": "^FCHI",
+        "cac": "^FCHI",
+        "s&p 500 index": "^GSPC",
+        "sp500 index": "^GSPC",
+        "indice s&p": "^GSPC",
+        "dow jones index": "^DJI",
+        "dow jones industrial": "^DJI",
+        "dow 30 index": "^DJI",
+        "nasdaq composite": "^IXIC",
+        "nasdaq index": "^IXIC",
+        "dax": "^GDAXI",
+        "dax 40": "^GDAXI",
+        "ftse 100": "^FTSE",
+        "ftse": "^FTSE",
+        "nikkei": "^N225",
+        "nikkei 225": "^N225",
+        "euro stoxx 50": "^STOXX50E",
+        "eurostoxx": "^STOXX50E",
+
+        # Crypto-monnaies (Top 15 par capitalisation)
+        "bitcoin": "BTC-USD",
+        "btc": "BTC-USD",
+        "ethereum": "ETH-USD",
+        "eth": "ETH-USD",
+        "ether": "ETH-USD",
+        "binance coin": "BNB-USD",
+        "bnb": "BNB-USD",
+        "cardano": "ADA-USD",
+        "ada": "ADA-USD",
+        "solana": "SOL-USD",
+        "sol": "SOL-USD",
+        "xrp": "XRP-USD",
+        "ripple": "XRP-USD",
+        "polkadot": "DOT-USD",
+        "dot": "DOT-USD",
+        "dogecoin": "DOGE-USD",
+        "doge": "DOGE-USD",
+        "avalanche": "AVAX-USD",
+        "avax": "AVAX-USD",
+        "polygon": "MATIC-USD",
+        "matic": "MATIC-USD",
+        "chainlink": "LINK-USD",
+        "link": "LINK-USD",
+        "litecoin": "LTC-USD",
+        "ltc": "LTC-USD",
     }
 
     def __init__(self):
@@ -139,10 +189,15 @@ class FinancialAgent:
         self.system_prompt = get_system_prompt()
         self.http_client = httpx.Client(timeout=30.0)
 
+        # Initialize router and knowledge base
+        self.router = QueryRouter()
+        self.knowledge_base = KnowledgeBase()
+
         logger.info(
             f"FinancialAgent initialized with model: {self.model} at {self.ollama_host}"
         )
         logger.info(f"MCP Server URL: {self.mcp_url}")
+        logger.info("Router and Knowledge Base initialized")
 
     def _initialize_conversation(self) -> None:
         """Initialize conversation with system prompt"""
@@ -238,7 +293,7 @@ class FinancialAgent:
     async def chat(self, user_message: str) -> Dict:
         """
         Process user message and generate response using Ollama.
-        Détecte automatiquement les demandes de données financières et appelle le MCP.
+        Uses intelligent routing to determine data sources (scraping/KB/LLM).
 
         Args:
             user_message: The user's input message
@@ -249,47 +304,117 @@ class FinancialAgent:
         try:
             self._initialize_conversation()
 
-            # Détection de ticker via regex simple (Phase 2)
-            # Sera amélioré en Phase 3 avec mapping intelligent
+            # Step 1: Detect ticker
             ticker_detected = self._extract_ticker(user_message)
 
-            if ticker_detected:
-                logger.info(f"Ticker détecté dans le message: {ticker_detected}")
+            # Step 2: Route query based on intent scoring
+            route, scores = self.router.route_query(user_message, bool(ticker_detected))
+            route_description = self.router.get_route_description(route)
 
-                # Appel du MCP tool
-                tool_result = self.call_mcp_tool("get_market_data", {"ticker": ticker_detected})
-                logger.info(f"Résultat MCP brut: {tool_result}")
+            logger.info("="*60)
+            logger.info(f"🎯 ROUTING DECISION: {route.upper()}")
+            logger.info(f"📊 Description: {route_description}")
+            logger.info(f"📈 Scores: {scores}")
+            logger.info(f"🎫 Ticker detected: {ticker_detected if ticker_detected else 'None'}")
+            logger.info("="*60)
 
-                # Injection des données dans le contexte système
-                if tool_result.get("success"):
-                    # Le contexte est dans tool_result['result']['context']
-                    result_data = tool_result.get("result", {})
-                    context_data = result_data.get("context", "Données non disponibles")
+            # Track data sources used for this response
+            sources_used = []
 
-                    context_message = (
-                        f"[DONNÉES FINANCIÈRES EN TEMPS RÉEL]\n"
-                        f"{context_data}\n\n"
-                        f"Utilise ces informations pour répondre à la question de l'utilisateur "
-                        f"de manière pédagogique et contextuelle."
-                    )
+            # Step 3: Handle routing based on strategy
+            if route == "scraping":
+                # Pure scraping: get real-time data only
+                if ticker_detected:
+                    sources_used.append("scraping")
+                    tool_result = self.call_mcp_tool("get_market_data", {"ticker": ticker_detected})
 
+                    if tool_result.get("success"):
+                        result_data = tool_result.get("result", {})
+                        context_data = result_data.get("context", "Données non disponibles")
+
+                        context_message = (
+                            f"[DONNÉES FINANCIÈRES EN TEMPS RÉEL]\n"
+                            f"{context_data}\n\n"
+                            f"Utilise ces informations pour répondre à la question de l'utilisateur "
+                            f"de manière pédagogique et contextuelle."
+                        )
+
+                        self.conversation_history.append({
+                            "role": "system",
+                            "content": context_message
+                        })
+                        logger.info(f"✅ Scraping: Données injectées pour {ticker_detected}")
+                    else:
+                        error_context = (
+                            f"[INFORMATION] Impossible de récupérer les données pour {ticker_detected}. "
+                            f"Explique à l'utilisateur que les données ne sont pas disponibles actuellement."
+                        )
+                        self.conversation_history.append({
+                            "role": "system",
+                            "content": error_context
+                        })
+                        logger.warning(f"❌ Scraping: Échec pour {ticker_detected}")
+
+            elif route == "knowledge":
+                # Pure knowledge base: educational content only
+                sources_used.append("knowledge_base")
+                kb_context = self.knowledge_base.build_context_message(user_message)
+
+                if kb_context:
                     self.conversation_history.append({
                         "role": "system",
-                        "content": context_message
+                        "content": kb_context
                     })
-                    logger.info(f"Contexte financier injecté pour {ticker_detected}")
-                    logger.debug(f"Contexte injecté:\n{context_message}")
+                    logger.info(f"✅ Knowledge Base: {len(kb_context)} chars injectés")
                 else:
-                    # En cas d'erreur, on informe le modèle
-                    error_context = (
-                        f"[INFORMATION] Impossible de récupérer les données pour {ticker_detected}. "
-                        f"Explique à l'utilisateur que les données ne sont pas disponibles actuellement."
-                    )
+                    logger.info("⚠️ Knowledge Base: Aucun contenu pertinent trouvé")
+
+            elif route == "hybrid":
+                # Hybrid: scraping + knowledge base
+                sources_used.append("scraping")
+                sources_used.append("knowledge_base")
+
+                # 1. Get real-time data if ticker present
+                if ticker_detected:
+                    tool_result = self.call_mcp_tool("get_market_data", {"ticker": ticker_detected})
+
+                    if tool_result.get("success"):
+                        result_data = tool_result.get("result", {})
+                        context_data = result_data.get("context", "Données non disponibles")
+
+                        scraping_context = (
+                            f"[DONNÉES FINANCIÈRES EN TEMPS RÉEL]\n"
+                            f"{context_data}\n"
+                        )
+
+                        self.conversation_history.append({
+                            "role": "system",
+                            "content": scraping_context
+                        })
+                        logger.info(f"✅ Hybrid - Scraping: Données injectées pour {ticker_detected}")
+
+                # 2. Add educational context from KB
+                kb_context = self.knowledge_base.build_context_message(
+                    user_message,
+                    ticker=ticker_detected
+                )
+
+                if kb_context:
                     self.conversation_history.append({
                         "role": "system",
-                        "content": error_context
+                        "content": kb_context
                     })
-                    logger.warning(f"Échec récupération données pour {ticker_detected}")
+                    logger.info(f"✅ Hybrid - Knowledge Base: {len(kb_context)} chars injectés")
+
+            elif route == "conversational":
+                # Pure LLM: no external data needed
+                sources_used.append("llm_only")
+                logger.info("💬 Conversational: Réponse LLM uniquement (pas de sources externes)")
+
+            else:
+                # Fallback to conversational
+                sources_used.append("llm_only")
+                logger.warning(f"⚠️ Route inconnue '{route}', fallback sur conversational")
 
             # Add user message to conversation history
             self.conversation_history.append(
@@ -301,12 +426,6 @@ class FinancialAgent:
             # DEBUG: Afficher la taille de l'historique
             total_chars = sum(len(msg['content']) for msg in self.conversation_history)
             logger.info(f"Sending {len(self.conversation_history)} messages to Ollama (~{total_chars} chars)")
-
-            # Afficher le dernier message système (avec données financières) si présent
-            system_messages = [msg for msg in self.conversation_history if msg['role'] == 'system']
-            if len(system_messages) > 1:  # Plus que le system prompt initial
-                last_system = system_messages[-1]
-                logger.info(f"Latest system message (financial data): {last_system['content'][:300]}...")
 
             # Call Ollama avec contexte enrichi
             response = ollama.chat(
@@ -320,13 +439,24 @@ class FinancialAgent:
                 {"role": "assistant", "content": assistant_message}
             )
 
-            logger.info("Response generated successfully")
+            logger.info("="*60)
+            logger.info("✅ RESPONSE GENERATED SUCCESSFULLY")
+            logger.info(f"📋 Sources used: {', '.join(sources_used)}")
+            logger.info(f"🎯 Route: {route}")
+            logger.info(f"💬 Response length: {len(assistant_message)} chars")
+            logger.info("="*60)
 
             return {
                 "success": True,
                 "response": assistant_message,
                 "model": self.model,
                 "conversation_length": len(self.conversation_history),
+                "routing": {
+                    "strategy": route,
+                    "scores": scores,
+                    "sources_used": sources_used,
+                    "ticker_detected": ticker_detected
+                }
             }
 
         except ollama.ResponseError as e:
