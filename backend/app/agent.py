@@ -200,11 +200,32 @@ class FinancialAgent:
         logger.info("Router and Knowledge Base initialized")
 
     def _initialize_conversation(self) -> None:
-        """Initialize conversation with system prompt"""
+        """
+        Initialize conversation with system prompt.
+        Always ensures system prompt is at the beginning and up-to-date.
+
+        CRITICAL FIX: Reinjects system prompt at every request to prevent
+        identity hallucination when context accumulates over multiple turns.
+        """
+        # If conversation is empty, add system prompt
         if not self.conversation_history:
             self.conversation_history.append(
                 {"role": "system", "content": self.system_prompt}
             )
+            logger.debug("System prompt initialized (first message)")
+        else:
+            # CRITICAL: Always refresh system prompt to prevent identity drift
+            # When knowledge base and scraping context accumulate, the initial
+            # system prompt gets "buried" and the model forgets its identity
+            if self.conversation_history[0]["role"] == "system":
+                self.conversation_history[0]["content"] = self.system_prompt
+                logger.debug("System prompt refreshed (identity reinforcement)")
+            else:
+                # Shouldn't happen, but insert if missing
+                self.conversation_history.insert(0,
+                    {"role": "system", "content": self.system_prompt}
+                )
+                logger.warning("System prompt was missing, reinserted")
 
     def _extract_ticker(self, message: str) -> Optional[str]:
         """
@@ -322,6 +343,10 @@ class FinancialAgent:
             sources_used = []
 
             # Step 3: Handle routing based on strategy
+            # CRITICAL FIX: Consolidate ALL context into a SINGLE system message
+            # to avoid overwhelming the 7B model with multiple system messages
+            additional_context = ""
+
             if route == "scraping":
                 # Pure scraping: get real-time data only
                 if ticker_detected:
@@ -332,27 +357,24 @@ class FinancialAgent:
                         result_data = tool_result.get("result", {})
                         context_data = result_data.get("context", "Données non disponibles")
 
-                        context_message = (
+                        additional_context = (
+                            f"\n\n{'='*60}\n"
+                            f"⚠️ INSTRUCTION CRITIQUE - UTILISE UNIQUEMENT CES DONNÉES ⚠️\n"
+                            f"{'='*60}\n\n"
                             f"[DONNÉES FINANCIÈRES EN TEMPS RÉEL]\n"
                             f"{context_data}\n\n"
-                            f"Utilise ces informations pour répondre à la question de l'utilisateur "
-                            f"de manière pédagogique et contextuelle."
+                            f"🚨 RÈGLE ABSOLUE : Tu DOIS utiliser EXACTEMENT les chiffres ci-dessus.\n"
+                            f"❌ N'INVENTE AUCUN prix, variation, ou métrique.\n"
+                            f"✅ Réponds en citant UNIQUEMENT les données fournies ci-dessus.\n"
+                            f"{'='*60}"
                         )
 
-                        self.conversation_history.append({
-                            "role": "system",
-                            "content": context_message
-                        })
-                        logger.info(f"✅ Scraping: Données injectées pour {ticker_detected}")
+                        logger.info(f"✅ Scraping: Données préparées pour {ticker_detected}")
                     else:
-                        error_context = (
-                            f"[INFORMATION] Impossible de récupérer les données pour {ticker_detected}. "
+                        additional_context = (
+                            f"\n\n[INFORMATION] Impossible de récupérer les données pour {ticker_detected}. "
                             f"Explique à l'utilisateur que les données ne sont pas disponibles actuellement."
                         )
-                        self.conversation_history.append({
-                            "role": "system",
-                            "content": error_context
-                        })
                         logger.warning(f"❌ Scraping: Échec pour {ticker_detected}")
 
             elif route == "knowledge":
@@ -361,11 +383,8 @@ class FinancialAgent:
                 kb_context = self.knowledge_base.build_context_message(user_message)
 
                 if kb_context:
-                    self.conversation_history.append({
-                        "role": "system",
-                        "content": kb_context
-                    })
-                    logger.info(f"✅ Knowledge Base: {len(kb_context)} chars injectés")
+                    additional_context = f"\n\n{kb_context}"
+                    logger.info(f"✅ Knowledge Base: {len(kb_context)} chars préparés")
                 else:
                     logger.info("⚠️ Knowledge Base: Aucun contenu pertinent trouvé")
 
@@ -382,16 +401,20 @@ class FinancialAgent:
                         result_data = tool_result.get("result", {})
                         context_data = result_data.get("context", "Données non disponibles")
 
-                        scraping_context = (
+                        scraping_part = (
+                            f"{'='*60}\n"
+                            f"⚠️ INSTRUCTION CRITIQUE - UTILISE UNIQUEMENT CES DONNÉES ⚠️\n"
+                            f"{'='*60}\n\n"
                             f"[DONNÉES FINANCIÈRES EN TEMPS RÉEL]\n"
-                            f"{context_data}\n"
+                            f"{context_data}\n\n"
+                            f"🚨 RÈGLE ABSOLUE : Tu DOIS utiliser EXACTEMENT les chiffres ci-dessus.\n"
+                            f"❌ N'INVENTE AUCUN prix, variation, ou métrique.\n"
+                            f"✅ Réponds en citant UNIQUEMENT les données fournies ci-dessus.\n"
+                            f"{'='*60}"
                         )
 
-                        self.conversation_history.append({
-                            "role": "system",
-                            "content": scraping_context
-                        })
-                        logger.info(f"✅ Hybrid - Scraping: Données injectées pour {ticker_detected}")
+                        additional_context += f"\n\n{scraping_part}"
+                        logger.info(f"✅ Hybrid - Scraping: Données préparées pour {ticker_detected}")
 
                 # 2. Add educational context from KB
                 kb_context = self.knowledge_base.build_context_message(
@@ -400,21 +423,61 @@ class FinancialAgent:
                 )
 
                 if kb_context:
-                    self.conversation_history.append({
-                        "role": "system",
-                        "content": kb_context
-                    })
-                    logger.info(f"✅ Hybrid - Knowledge Base: {len(kb_context)} chars injectés")
+                    additional_context += f"\n\n{kb_context}"
+                    logger.info(f"✅ Hybrid - Knowledge Base: {len(kb_context)} chars préparés")
 
             elif route == "conversational":
                 # Pure LLM: no external data needed
                 sources_used.append("llm_only")
                 logger.info("💬 Conversational: Réponse LLM uniquement (pas de sources externes)")
 
+                # CRITICAL FIX: Detect identity questions and add reminder to context
+                identity_keywords = ["qui es-tu", "qui es tu", "c'est qui", "ton nom", "tu t'appelles",
+                                    "ton identité", "qui t'a créé", "qui a créé", "qui ta créé"]
+                if any(keyword in user_message.lower() for keyword in identity_keywords):
+                    identity_reminder = (
+                        "\n\n[RAPPEL IDENTITÉ]\n"
+                        "Tu es Start&Trade, un assistant financier intelligent alimenté par Qwen2.5. "
+                        "Tu accompagnes les jeunes investisseurs dans leur apprentissage des marchés financiers."
+                    )
+                    additional_context += identity_reminder
+                    logger.info("🆔 Identity question detected → Identity reminder prepared")
+
             else:
                 # Fallback to conversational
                 sources_used.append("llm_only")
                 logger.warning(f"⚠️ Route inconnue '{route}', fallback sur conversational")
+
+            # CRITICAL FIX: Consolidate all additional context into the SINGLE system message
+            # This prevents the 7B model from getting confused by multiple system messages
+
+            # First, clean up any old system messages that might have accumulated (keep only [0])
+            cleaned_history = [self.conversation_history[0]]  # Keep system prompt
+            for msg in self.conversation_history[1:]:
+                if msg['role'] != 'system':  # Remove all other system messages
+                    cleaned_history.append(msg)
+
+            if len(cleaned_history) < len(self.conversation_history):
+                removed = len(self.conversation_history) - len(cleaned_history)
+                logger.info(f"🧹 Cleaned up {removed} old system message(s)")
+                self.conversation_history = cleaned_history
+
+            # PERFORMANCE FIX: Prevent context from growing too large for 7B model
+            # Keep: system prompt [0] + last N conversation turns (user + assistant pairs)
+            MAX_CONVERSATION_PAIRS = 5  # Keep last 5 user-assistant pairs (10 messages)
+            if len(self.conversation_history) > (1 + MAX_CONVERSATION_PAIRS * 2):
+                # Keep system prompt + last N pairs
+                old_count = len(self.conversation_history)
+                self.conversation_history = [self.conversation_history[0]] + self.conversation_history[-(MAX_CONVERSATION_PAIRS * 2):]
+                logger.info(f"🗑️ Context pruning: removed {old_count - len(self.conversation_history)} old messages")
+
+            # Now consolidate all context into the single system message
+            if additional_context:
+                # Append additional context to the system prompt at position [0]
+                self.conversation_history[0]["content"] = self.system_prompt + additional_context
+                logger.info(f"✅ Context consolidé: {len(additional_context)} chars ajoutés au system prompt")
+            else:
+                logger.info("ℹ️ Pas de contexte additionnel pour cette requête")
 
             # Add user message to conversation history
             self.conversation_history.append(
@@ -423,9 +486,27 @@ class FinancialAgent:
 
             logger.info(f"Processing message: {user_message[:100]}...")
 
-            # DEBUG: Afficher la taille de l'historique
+            # DEBUG: Afficher la taille de l'historique et la structure
             total_chars = sum(len(msg['content']) for msg in self.conversation_history)
-            logger.info(f"Sending {len(self.conversation_history)} messages to Ollama (~{total_chars} chars)")
+            system_count = len([msg for msg in self.conversation_history if msg['role'] == 'system'])
+            user_count = len([msg for msg in self.conversation_history if msg['role'] == 'user'])
+            assistant_count = len([msg for msg in self.conversation_history if msg['role'] == 'assistant'])
+
+            logger.info(f"📨 Sending to Ollama: {len(self.conversation_history)} messages (~{total_chars} chars)")
+            logger.info(f"   Structure: {system_count} system, {user_count} user, {assistant_count} assistant")
+
+            # DEBUG: Vérifier le contenu du message système consolidé
+            if self.conversation_history[0]['role'] == 'system':
+                system_msg = self.conversation_history[0]['content']
+                logger.debug(f"🔍 SYSTEM MESSAGE CONSOLIDÉ ({len(system_msg)} chars)")
+                logger.debug(f"   Preview (first 300): {system_msg[:300]}...")
+                logger.debug(f"   Preview (last 300): ...{system_msg[-300:]}")
+
+                # Vérifier si les données financières sont présentes
+                if "DONNÉES FINANCIÈRES EN TEMPS RÉEL" in system_msg:
+                    logger.info("✅ Données financières PRÉSENTES dans le system message consolidé")
+                else:
+                    logger.info("ℹ️ Pas de données financières dans cette requête")
 
             # Call Ollama avec contexte enrichi
             response = ollama.chat(

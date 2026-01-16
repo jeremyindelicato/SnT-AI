@@ -59,3 +59,12 @@ Thumbs.db
 # Project specific
 *.sqlite
 *.db
+
+# Test files
+test_*.py
+*_test.py
+
+# Documentation temporaire
+FIXES_*.md
+PRESENTATION_*.md
+project-explaination/

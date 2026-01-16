@@ -1,50 +1,48 @@
-# 🚀 Start&Trade - Projet HEPHAESTUS
+# Start&Trade - Assistant Financier Intelligent
 
-Agent conversationnel intelligent agissant comme conseiller financier pour jeunes investisseurs.
+Un assistant conversationnel propulsé par l'IA locale pour accompagner les jeunes investisseurs dans leurs premiers pas sur les marchés financiers.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![React](https://img.shields.io/badge/react-18.2-blue.svg)
 ![Ollama](https://img.shields.io/badge/ollama-qwen2.5:7b-green.svg)
 
-## 📖 Description
+## À propos
 
-**Start&Trade** est un assistant financier pédagogique propulsé par l'IA, conçu pour accompagner les jeunes investisseurs dans leurs premiers pas sur les marchés financiers. Le projet utilise une architecture moderne et modulaire combinant IA locale, scraping en temps réel, knowledge base pédagogique et système de routage intelligent.
+Start&Trade est un chatbot financier pédagogique qui fonctionne entièrement en local sur votre machine. Le projet combine :
 
-### 🎯 Objectifs
+- Un moteur d'IA local (Qwen2.5:7b via Ollama) pour le raisonnement
+- Du scraping en temps réel pour récupérer les données de marché
+- Une base de connaissances structurée avec des concepts financiers
+- Un système de routage intelligent qui détermine automatiquement quelle stratégie utiliser
 
-- Fournir un conseiller financier accessible et pédagogique
-- Utiliser uniquement des technologies locales et open-source (100% local)
-- Récupérer des données financières en temps réel via scraping éthique
-- Combiner données temps réel + contenu pédagogique via routage intelligent
-- Offrir une expérience utilisateur moderne et fluide
+### Objectifs du projet
 
-## 🏗️ Architecture
+Le projet vise à rendre l'analyse financière accessible aux débutants en combinant des données temps réel avec du contenu éducatif, le tout sans nécessiter d'API payantes ou de connexion internet permanente.
 
-Le projet suit l'architecture **HEPHAESTUS** avec routage intelligent :
+## Architecture
+
+Le système suit une architecture multi-couches avec un routeur intelligent au centre :
 
 ```
 ┌─────────────────┐
-│   Frontend      │  React + Vite + Tailwind (Port 3000)
-│   (Interface)   │  Glassmorphism design
+│   Frontend      │  React + Vite + Tailwind
+│   (Interface)   │  Design glassmorphism
 └────────┬────────┘
          │ HTTP REST
          ↓
 ┌─────────────────────────────────────────┐
-│         Backend FastAPI (Port 8000)      │
+│         Backend FastAPI                  │
 │  ┌──────────────────────────────────┐   │
-│  │    QueryRouter (Scoring)         │   │
-│  │  • Scraping score                │   │
-│  │  • Knowledge score               │   │
-│  │  • Conversational score          │   │
-│  │  • Hybrid score                  │   │
+│  │    QueryRouter                   │   │
+│  │  - Score les intentions          │   │
+│  │  - Décide de la stratégie        │   │
 │  └──────────┬───────────────────────┘   │
 │             ↓                            │
 │  ┌──────────────────────────────────┐   │
 │  │   FinancialAgent                 │   │
-│  │  • Ticker detection (145 assets) │   │
-│  │  • Intelligent routing           │   │
-│  │  • Context injection             │   │
+│  │  - Détecte 145 instruments       │   │
+│  │  - Injecte le contexte           │   │
 │  └──────────┬───────────────────────┘   │
 └─────────────┼───────────────────────────┘
               │
@@ -52,44 +50,44 @@ Le projet suit l'architecture **HEPHAESTUS** avec routage intelligent :
     ↓         ↓         ↓             ↓
 ┌────────┐ ┌───────┐ ┌─────────┐ ┌──────────┐
 │ Ollama │ │  MCP  │ │Knowledge│ │ yfinance │
-│Qwen2.5 │ │Server │ │  Base   │ │ (Scraper)│
-│  7B    │ │ 8001  │ │ (JSON)  │ │          │
+│Qwen2.5 │ │Server │ │  Base   │ │ Scraping │
+│  7B    │ │       │ │         │ │          │
 └────────┘ └───────┘ └─────────┘ └──────────┘
 ```
 
-### Stack Technique
+### Stack technique
 
 | Couche | Technologie | Rôle |
 |--------|------------|------|
-| **Frontend** | React + Vite + Tailwind | Interface utilisateur moderne avec glassmorphism |
-| **Backend** | Python + FastAPI | Orchestrateur et API REST |
-| **LLM** | Ollama + Qwen2.5:7b | Moteur de raisonnement IA local (32k context) |
-| **Router** | Python (custom) | Système de scoring intelligent (4 dimensions) |
-| **Knowledge Base** | JSON (517 lignes) | Concepts financiers + glossaire + stratégies |
-| **MCP** | Python | Serveur de protocole pour outils |
-| **Scraping** | yfinance | Récupération données Yahoo Finance (25+ metrics) |
-| **Assets** | 145 instruments | Actions, ETF, indices, crypto-monnaies |
+| **Frontend** | React + Vite + Tailwind | Interface utilisateur |
+| **Backend** | Python + FastAPI | Orchestration et API REST |
+| **LLM** | Ollama + Qwen2.5:7b | Moteur de raisonnement (32k tokens de contexte) |
+| **Router** | Python | Scoring intelligent sur 4 dimensions |
+| **Knowledge Base** | JSON | 517 lignes de concepts financiers |
+| **MCP** | Python + FastAPI | Serveur de protocole pour outils |
+| **Scraping** | yfinance | Données Yahoo Finance temps réel |
 
-## 🚀 Installation & Démarrage Complet
+## Installation
 
 ### Prérequis
 
-- **Python 3.10+** (vérifier avec `python3 --version`)
-- **Node.js 18+** (vérifier avec `node --version`)
-- **Ollama** installé localement
-- **Git** pour cloner le projet
+Vous aurez besoin de :
 
-### 📦 Installation Étape par Étape
+- Python 3.10 ou supérieur
+- Node.js 18 ou supérieur
+- Ollama installé sur votre machine
+- Au moins 16 GB de RAM (recommandé : 32 GB)
 
-#### **Étape 1 : Cloner le projet**
+### Étape 1 : Cloner le projet
 
 ```bash
-# Cloner le dépôt
 git clone <url-du-repo>
 cd "SnT AI"
 ```
 
-#### **Étape 2 : Installer Ollama**
+### Étape 2 : Installer et configurer Ollama
+
+Installer Ollama selon votre système :
 
 ```bash
 # macOS / Linux
@@ -99,69 +97,63 @@ curl -fsSL https://ollama.com/install.sh | sh
 ```
 
 Vérifier l'installation :
+
 ```bash
 ollama --version
 ```
 
-#### **Étape 3 : Télécharger le modèle Qwen2.5:7b**
+Télécharger le modèle Qwen2.5:7b (environ 4.7 GB) :
 
 ```bash
-# Télécharger le modèle (environ 4.7 GB)
 ollama pull qwen2.5:7b
+```
 
-# Vérifier que le modèle est installé
+Vérifier que le modèle est bien installé :
+
+```bash
 ollama list
 ```
 
-> **Note** : Le téléchargement prend quelques minutes selon votre connexion.
-
-#### **Étape 4 : Configuration Backend (Python)**
+### Étape 3 : Configurer le backend
 
 ```bash
-# Se placer dans le dossier backend
 cd backend
 
-# Créer un environnement virtuel
-python -m venv venv
+# Créer un environnement virtuel Python
+python3 -m venv venv
 
-# Activer l'environnement virtuel
-# macOS/Linux :
-source venv/bin/activate
-# Windows :
- venv\Scripts\activate
+# Activer l'environnement
+source venv/bin/activate  # macOS/Linux
+# venv\Scripts\activate   # Windows
 
-# Installer les dépendances Python
+# Installer les dépendances
 pip install -r requirements.txt
 ```
 
-Vérifier l'installation :
+Vérifier que tout fonctionne :
+
 ```bash
-python -c "import fastapi, ollama, yfinance; print('✅ Dépendances installées')"
+python -c "import fastapi, ollama, yfinance; print('Dépendances OK')"
 ```
 
-#### **Étape 5 : Configuration Frontend (React)**
+### Étape 4 : Configurer le frontend
 
 ```bash
-# Revenir à la racine puis aller dans frontend
-cd ..
-cd frontend
+cd ../frontend
 
-# Installer les dépendances Node.js
+# Installer les dépendances Node
 npm install
-
-# Vérifier l'installation
-npm list --depth=0
 ```
 
-### 🚀 Lancement de l'Application
+## Démarrage
 
-**Important** : Ouvrir **3 terminaux séparés** pour les 3 services.
+Le système nécessite trois services qui doivent tourner simultanément. Ouvrez trois terminaux différents :
 
-#### **Terminal 1 : MCP Server** (Port 8001)
+### Terminal 1 : Serveur MCP (port 8001)
 
 ```bash
 cd backend
-source venv/bin/activate  /  Windows: venv\Scripts\activate
+source venv/bin/activate
 python -m mcp.mcp_server
 ```
 
@@ -171,11 +163,11 @@ INFO:     Started server process [xxxxx]
 INFO:     Uvicorn running on http://0.0.0.0:8001
 ```
 
-#### **Terminal 2 : Backend FastAPI** (Port 8000)
+### Terminal 2 : Backend FastAPI (port 8000)
 
 ```bash
 cd backend
-source venv/bin/activate  / Windows: venv\Scripts\activate
+source venv/bin/activate
 uvicorn app.main:app --reload --port 8000
 ```
 
@@ -185,7 +177,7 @@ INFO:     Router and Knowledge Base initialized
 INFO:     Uvicorn running on http://127.0.0.1:8000
 ```
 
-#### **Terminal 3 : Frontend React** (Port 3000)
+### Terminal 3 : Frontend React (port 3000)
 
 ```bash
 cd frontend
@@ -194,257 +186,242 @@ npm run dev
 
 Vous devriez voir :
 ```
-  VITE v5.x.x  ready in xxx ms
+VITE v5.x.x  ready in xxx ms
 
-  ➜  Local:   http://localhost:3000/
+➜  Local:   http://localhost:3000/
 ```
 
-### 🌐 Accéder à l'Application
+### Accès à l'application
 
-Une fois les 3 services lancés :
+Une fois les trois services lancés :
 
-| Service | URL | Description |
-|---------|-----|-------------|
-| **Frontend** | http://localhost:3000 | Interface utilisateur principale |
-| **Backend API** | http://localhost:8000/docs | Documentation API Swagger |
-| **MCP Server** | http://localhost:8001/docs | Documentation MCP Tools |
-| **Health Check** | http://localhost:8000/health | Vérification santé backend |
+- **Application** : http://localhost:3000
+- **Documentation API Backend** : http://localhost:8000/docs
+- **Documentation MCP** : http://localhost:8001/docs
+- **Health check** : http://localhost:8000/health
 
-## 🧪 Tests et Vérifications
+## Test du système
 
-### Test de Santé des Services
+### Vérifier que tout fonctionne
 
 ```bash
-# 1. Vérifier le backend
+# Vérifier le backend
 curl http://localhost:8000/health
-# Réponse attendue : {"status":"healthy","model":"qwen2.5:7b"}
 
-# 2. Vérifier le MCP Server
+# Vérifier le MCP Server
 curl http://localhost:8001/health
-# Réponse attendue : {"status":"healthy"}
 
-# 3. Vérifier Ollama
+# Vérifier Ollama
 ollama list
-# Vous devriez voir qwen2.5:7b dans la liste
 ```
 
-### Test du Chat (API)
+### Tester via l'API
 
 ```bash
-# Test 1 : Question simple
+# Question simple (routage conversationnel)
 curl -X POST http://localhost:8000/chat \
   -H "Content-Type: application/json" \
   -d '{"message": "Bonjour"}'
 
-# Test 2 : Question éducative (Knowledge Base)
+# Question éducative (routage knowledge base)
 curl -X POST http://localhost:8000/chat \
   -H "Content-Type: application/json" \
-  -d '{"message": "C'\''est quoi un ratio P/E ?"}'
+  -d '{"message": "Qu'\''est-ce qu'\''un ratio P/E ?"}'
 
-# Test 3 : Requête de données (Scraping)
+# Question avec données (routage scraping)
 curl -X POST http://localhost:8000/chat \
   -H "Content-Type: application/json" \
-  -d '{"message": "Quel est le prix d'\''Apple ?"}'
+  -d '{"message": "Quel est le prix actuel d'\''Apple ?"}'
 ```
 
-### Observer le Routage Intelligent
+### Observer le routage intelligent
 
-Lorsque vous envoyez des messages, regardez les logs du **Terminal 2 (Backend)**. Vous verrez :
+Dans le terminal du backend (Terminal 2), vous verrez des logs détaillés montrant comment le système route chaque requête :
 
 ```
 ============================================================
-🎯 ROUTING DECISION: KNOWLEDGE
-📊 Description: 📚 Base de connaissances (concepts financiers)
-📈 Scores: {'scraping': 0.0, 'knowledge': 0.4, 'conversational': 0.0, 'hybrid': 0.0}
-🎫 Ticker detected: None
+ROUTING DECISION: KNOWLEDGE
+Description: Base de connaissances (concepts financiers)
+Scores: {'scraping': 0.0, 'knowledge': 0.4, 'conversational': 0.0, 'hybrid': 0.0}
+Ticker detected: None
 ============================================================
-✅ Knowledge Base: 1245 chars injectés
+Knowledge Base: 1245 chars injectés
 ============================================================
-✅ RESPONSE GENERATED SUCCESSFULLY
-📋 Sources used: knowledge_base
-🎯 Route: knowledge
-💬 Response length: 523 chars
+RESPONSE GENERATED SUCCESSFULLY
+Sources used: knowledge_base
+Route: knowledge
+Response length: 523 chars
 ============================================================
 ```
 
-### Exemples de Requêtes par Type
+### Exemples de requêtes par type
 
-| Type | Exemple de Question | Route Attendue |
-|------|---------------------|----------------|
-| **Conversational** | "Bonjour, comment ça va ?" | 💬 conversational |
-| **Knowledge** | "Qu'est-ce que la diversification ?" | 📚 knowledge |
-| **Scraping** | "Quel est le cours de LVMH ?" | 📊 scraping |
-| **Hybrid** | "Apple est-elle chère ? Explique-moi le P/E" | 🔀 hybrid |
+| Type de requête | Exemple | Route attendue |
+|-----------------|---------|----------------|
+| Conversational | "Bonjour, comment vas-tu ?" | conversational |
+| Knowledge | "Explique-moi la diversification" | knowledge |
+| Scraping | "Prix de LVMH aujourd'hui ?" | scraping |
+| Hybrid | "Apple est-elle chère ? Explique le P/E" | hybrid |
 
-## 📁 Structure du Projet
+## Structure du projet
 
 ```
 SnT-AI/
-├── backend/                     # Backend Python FastAPI
-│   ├── app/                    # Application principale
-│   │   ├── main.py            # FastAPI app & routes
-│   │   ├── agent.py           # FinancialAgent (Ollama + Router)
-│   │   ├── router.py          # QueryRouter (scoring intelligent) ✨ NEW
-│   │   ├── knowledge_base.py  # KnowledgeBase manager ✨ NEW
-│   │   ├── config.py          # Configuration
-│   │   ├── models.py          # Modèles Pydantic
-│   │   └── prompts.py         # System prompts (265 lignes)
+├── backend/
+│   ├── app/
+│   │   ├── main.py              # Application FastAPI
+│   │   ├── agent.py             # Agent financier principal
+│   │   ├── router.py            # Système de routage intelligent
+│   │   ├── knowledge_base.py    # Gestionnaire de la base de connaissances
+│   │   ├── config.py            # Configuration
+│   │   ├── models.py            # Modèles Pydantic
+│   │   └── prompts.py           # Prompts système (1494 lignes)
 │   │
-│   ├── data/                   # Données statiques ✨ NEW
-│   │   ├── knowledge_base.json # Base de connaissances (517 lignes)
-│   │   └── market_data.json    # Cache données scrappées
+│   ├── data/
+│   │   ├── knowledge_base.json  # Base de connaissances (517 lignes)
+│   │   └── market_data.json     # Cache des données scrapées
 │   │
-│   ├── mcp/                    # Serveur MCP
-│   │   ├── mcp_server.py      # Serveur MCP
-│   │   └── tools.py           # get_market_data tool (yfinance)
+│   ├── mcp/
+│   │   ├── mcp_server.py        # Serveur MCP
+│   │   └── tools.py             # Outil get_market_data (yfinance)
 │   │
-│   └── requirements.txt        # Dépendances Python
+│   ├── scraping/
+│   │   └── scraping_yfinance.py # Scraper Yahoo Finance
+│   │
+│   └── requirements.txt
 │
-├── frontend/                    # Frontend React
+├── frontend/
 │   ├── src/
-│   │   ├── components/         # Composants React
-│   │   │   ├── ChatBox.jsx    # Chat interface + Markdown processing
-│   │   │   └── GlassCard.jsx  # Glassmorphism card
-│   │   ├── services/           # Services API
-│   │   │   └── api.js
-│   │   ├── App.jsx             # Application principale
-│   │   ├── index.css           # Styles globaux (gold theme)
-│   │   └── main.jsx            # Point d'entrée
+│   │   ├── components/
+│   │   │   ├── ChatBox.jsx      # Interface de chat
+│   │   │   └── GlassCard.jsx    # Composant glassmorphism
+│   │   ├── services/
+│   │   │   └── api.js           # Client API
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   └── main.jsx
+│   │
 │   ├── package.json
 │   └── vite.config.js
 │
-├── project-explaination/        # Documentation du projet
-├── test_router_only.py          # Script de test du router ✨ NEW
-└── README.md                    # Ce fichier
+└── README.md
 ```
 
-### Fichiers Clés Ajoutés
+## Fonctionnalités
 
-| Fichier | Lignes | Description |
-|---------|--------|-------------|
-| `backend/app/router.py` | 185 | Système de scoring sur 4 dimensions |
-| `backend/app/knowledge_base.py` | 210 | Gestion de la base de connaissances |
-| `backend/data/knowledge_base.json` | 517 | 11 concepts + 20 termes + 10 assets + stratégies |
-| `backend/app/agent.py` | 473 | Intégration router + KB (modifié) |
+### Implémentées
 
-## ✨ Fonctionnalités
+**Backend et IA :**
 
-### ✅ Implémentées (Version Actuelle)
-
-**Backend & IA :**
-- [x] Backend FastAPI avec endpoint `/chat` et `/health`
-- [x] Agent FinancialAgent avec Ollama Qwen2.5:7b (32k context)
-- [x] System Prompt de 265 lignes avec guardrails éthiques
-- [x] **QueryRouter avec scoring intelligent sur 4 dimensions** ⭐
-- [x] **Knowledge Base de 517 lignes (11 concepts + 20 termes + stratégies)** ⭐
-- [x] Détection de 145 instruments (actions, ETF, indices, crypto)
-- [x] Serveur MCP avec tool `get_market_data` (yfinance)
-- [x] Scraping Yahoo Finance en temps réel (25+ métriques)
-- [x] Logs détaillés avec traçabilité des sources de données
+- Backend FastAPI avec endpoints REST
+- Agent financier utilisant Ollama et Qwen2.5:7b (32k tokens de contexte)
+- System prompt de 1494 lignes avec guardrails éthiques rigoureux
+- Routeur intelligent avec scoring sur 4 dimensions
+- Base de connaissances structurée (11 concepts + 20 termes + stratégies)
+- Détection automatique de 145 instruments (actions, ETF, indices, cryptos)
+- Serveur MCP avec outil de scraping yfinance
+- Récupération de 25+ métriques financières en temps réel
+- Logs détaillés avec traçabilité complète
 
 **Frontend :**
-- [x] Interface React + Vite + Tailwind CSS
-- [x] Design glassmorphism premium avec thème gold
-- [x] Chat temps réel avec streaming
-- [x] Post-processing Markdown (`**bold**` → HTML)
-- [x] Gestion d'erreurs et health checks
 
-**Routage Intelligent :**
-- [x] **SCRAPING** : Données temps réel (prix, P/E, volume, etc.)
-- [x] **KNOWLEDGE** : Explications pédagogiques (concepts financiers)
-- [x] **CONVERSATIONAL** : Réponses LLM pures (salutations, remerciements)
-- [x] **HYBRID** : Combinaison données + pédagogie
+- Interface React moderne avec Vite et Tailwind CSS
+- Design glassmorphism avec thème doré
+- Chat en temps réel avec gestion du markdown
+- Indicateurs de santé des services
+- Gestion d'erreurs robuste
 
-### 🎯 Points Forts Techniques
+**Routage intelligent :**
 
-| Aspect | Description | Impact |
-|--------|-------------|--------|
-| **100% Local** | Aucune API externe payante | Gratuit, privé, pas de latence réseau |
-| **Routage Intelligent** | 90% de précision (9/10 tests) | Optimisation des réponses selon le contexte |
-| **Knowledge Base** | 517 lignes de contenu structuré | Réponses pédagogiques sans scraping |
-| **145 Instruments** | Actions FR/US + ETF + Indices + Crypto | Couverture large des marchés |
-| **Guardrails Éthiques** | Interdictions, warnings, profil risque | Protection des investisseurs débutants |
+Le système détermine automatiquement la meilleure stratégie pour chaque requête :
 
-### 🚧 Améliorations Futures
+- **SCRAPING** : Données en temps réel (prix, ratios, volume)
+- **KNOWLEDGE** : Explications pédagogiques tirées de la base de connaissances
+- **CONVERSATIONAL** : Réponses conversationnelles simples
+- **HYBRID** : Combinaison de données temps réel et de contenu éducatif
 
-- [ ] Gestion de sessions persistantes (Redis/SQLite)
-- [ ] Historique de conversations avec export
-- [ ] Graphiques financiers interactifs (Chart.js)
-- [ ] Mode vocal avec speech-to-text
-- [ ] Notifications de prix en temps réel
-- [ ] Portfolio tracking et simulations
+### Points forts techniques
 
-## 🎨 Captures d'écran
+| Aspect | Description |
+|--------|-------------|
+| **100% Local** | Aucune API externe payante, données privées |
+| **Routage précis** | 90% de précision sur les tests |
+| **Base de connaissances** | 517 lignes de contenu pédagogique structuré |
+| **Couverture large** | 145 instruments financiers supportés |
+| **Guardrails éthiques** | Système de protection pour investisseurs débutants |
+| **Architecture modulaire** | Séparation claire des responsabilités |
 
-*(À ajouter après première démo)*
+### Améliorations futures
 
-## 📚 Documentation
+- Gestion de sessions persistantes avec Redis ou SQLite
+- Historique des conversations avec possibilité d'export
+- Graphiques financiers interactifs
+- Mode vocal avec reconnaissance vocale
+- Notifications de prix en temps réel
+- Suivi de portefeuille et simulations
 
-- [Backend README](backend/README.md) - Documentation complète du backend
-- [Frontend README](frontend/README.md) - Documentation complète du frontend
-- [Project Documentation](project-explaination/project-explaination.md) - Vision et architecture HEPHAESTUS
+## Contribution
 
-## 🤝 Contribution
-
-Ce projet est développé dans le cadre du projet académique HEPHAESTUS (8-16 janvier 2026).
+Ce projet est développé dans le cadre d'un projet académique.
 
 Pour contribuer :
+
 1. Fork le projet
-2. Créer une branche (`git checkout -b feature/amazing-feature`)
-3. Commit les changements (`git commit -m 'Add amazing feature'`)
-4. Push vers la branche (`git push origin feature/amazing-feature`)
+2. Créer une branche (`git checkout -b feature/nouvelle-fonctionnalite`)
+3. Commit les changements (`git commit -m 'Ajout de la fonctionnalité'`)
+4. Push vers la branche (`git push origin feature/nouvelle-fonctionnalite`)
 5. Ouvrir une Pull Request
 
-## 📄 Licence
+## Dépannage
 
-Projet académique - HEPHAESTUS 2026
+### Le modèle n'est pas trouvé
 
-## 👨‍💻 Auteur
+Vérifier que Qwen2.5:7b est bien téléchargé :
 
-Développé avec ❤️ dans le cadre du projet HEPHAESTUS
-
-## 🔧 Dépannage
-
-### Problème : "Model not found"
 ```bash
-# Vérifier que Qwen2.5 est bien téléchargé
 ollama list
+```
 
-# Si absent, télécharger
+Si absent, le télécharger :
+
+```bash
 ollama pull qwen2.5:7b
 ```
 
-### Problème : "Port already in use"
+### Port déjà utilisé
+
+Trouver et arrêter le processus qui utilise le port :
+
 ```bash
-# Trouver le processus qui utilise le port
 lsof -i :8000  # ou :8001, :3000
-kill -9 <PID>  # Remplacer <PID> par le numéro du processus
+kill -9 <PID>
 ```
 
-### Problème : "Module 'fastapi' not found"
-```bash
-# Activer l'environnement virtuel
-cd backend
-source venv/bin/activate  # Windows: venv\Scripts\activate
+### Module Python non trouvé
 
-# Réinstaller les dépendances
+Vérifier que l'environnement virtuel est activé :
+
+```bash
+cd backend
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Problème : Réponses lentes
-- Le modèle Qwen2.5:7b nécessite au moins **8GB de RAM**
-- Sur Mac M1/M2/M3/M4 : Performances optimales
-- Sur CPU Intel/AMD : ~30-60s par réponse (normal)
+### Réponses lentes
 
-## 🙏 Remerciements
+Le modèle Qwen2.5:7b nécessite au moins 8 GB de RAM. Les performances varient selon le matériel :
 
-- **Ollama** pour l'exécution locale de LLM
+- Mac M1/M2/M3 : Performances optimales (3-10 secondes)
+- CPU Intel/AMD récent : 15-30 secondes par réponse
+- GPU NVIDIA : 3-8 secondes avec CUDA
+
+## Crédits
+
+Ce projet utilise les technologies suivantes :
+
+- **Ollama** pour l'exécution locale de modèles de langage
 - **Alibaba Cloud** pour le modèle Qwen2.5:7b
 - **FastAPI** pour le framework backend
-- **React** & **Vite** pour le frontend moderne
-- **Tailwind CSS** pour le design system
-- **yfinance** pour le scraping Yahoo Finance
-
----
-
-**⚠️ Disclaimer** : Ce projet est un prototype éducatif développé dans le cadre du projet académique HEPHAESTUS. Les informations fournies par l'IA ne constituent pas des conseils financiers professionnels. Tout investissement comporte un risque de perte en capital.
+- **React** et **Vite** pour le frontend moderne
+- **Tailwind CSS** pour le système de design
+- **yfinance** pour l'accès aux données Yahoo Finance
